@@ -5,13 +5,18 @@ import Form from '../Form';
 import ContactList from '../ContactList';
 
 export default function App() {
-  const [contacts, setContacts] = useState(() => {
-    return JSON.parse(window.localStorage.getItem('contacts')) ?? '';
-  });
+  const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+    const storageContactsArray = JSON.parse(localStorage.getItem('contacts'));
+    if (storageContactsArray?.length) {
+      setContacts(storageContactsArray);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
   const handleSubmit = contact => {
